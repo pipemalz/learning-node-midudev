@@ -17,4 +17,4 @@ Promise.all([
 })
   .catch(error => console.log(error))
 
-console.log("Do something while reading files")
+console.log('Do something while reading files')

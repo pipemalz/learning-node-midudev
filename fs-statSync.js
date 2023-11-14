@@ -1,4 +1,4 @@
-const fs = require("node:fs")
+const fs = require('node:fs')
 
 const fileInfo = fs.statSync('./archivo.txt')
 

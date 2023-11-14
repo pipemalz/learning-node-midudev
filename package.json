@@ -1,0 +1,32 @@
+{
+  "name": "curso-node",
+  "version": "1.0.0",
+  "description": "Curso de node midudev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pipemalz/learning-node-midudev.git"
+  },
+  "keywords": [
+    "node",
+    "js"
+  ],
+  "author": " <sinister012@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pipemalz/learning-node-midudev/issues"
+  },
+  "homepage": "https://github.com/pipemalz/learning-node-midudev#readme",
+  "dependencies": {
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}

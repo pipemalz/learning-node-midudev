@@ -12,10 +12,10 @@ async function dir (directory) {
     process.exit(1)
   }
 
-  const filesPromises = files.map(async file=> {
+  const filesPromises = files.map(async file => {
     let fileStats
     const filePath = path.join(directory, file)
-    
+
     try {
       fileStats = await fs.stat(filePath)
     } catch (error) {

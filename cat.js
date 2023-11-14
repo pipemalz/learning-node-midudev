@@ -2,7 +2,7 @@ const { readFile } = require('node:fs/promises')
 
 const file = process.argv[2]
 
-async function cat(filePath) {
+async function cat (filePath) {
   let text
   try {
     text = await readFile(filePath, 'utf-8')
