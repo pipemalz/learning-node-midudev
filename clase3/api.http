@@ -1,0 +1,26 @@
+GET http://localhost:3000
+
+### Recuperar todas las películas
+GET http://localhost:3000/movies
+
+### Recuperar película por su ID
+GET http://localhost:3000/movies/c906673b-3948-4402-ac7f-73ac3a9e3105
+
+### Recuperar películas por su género usando query string
+GET http://localhost:3000/movies?genre=CriMe
+
+### Crear una nueva pelicula con POST
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+    "title": "Django Unchained",
+    "year": 2013,
+    "director": "Quentin Tarantino",
+    "duration": 165,
+    "genre": [
+        "Western",
+        "Action",
+        "Drama"
+    ]
+}

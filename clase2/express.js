@@ -29,13 +29,13 @@ const PORT = 3000
 //   })
 // })
 
-// // Cuando la app recibe un get en el parametro 1 (ruta), entonces haz esta acción del parametro 2 (funcion)
-// app.get('/pokemon/ditto', (req, res) => {
-//   res.json(dittoJSON)
-// })
-
 // Todo el codigo anterior del middleware, gracias a express se puede resumir a la siguiente línea
 app.use(express.json())
+
+// Cuando la app recibe un get en el parametro 1 (ruta), entonces haz esta acción del parametro 2 (funcion)
+app.get('/pokemon/ditto', (req, res) => {
+  res.json(dittoJSON)
+})
 
 // Ya que habiamos mutado la request y su propiedad body de manera separada, ahora es tan simple como enviarla directamente ya que la request va viajando hasta ser tratada con la función app.post, al ser esta de tipo POST.
 app.post('/pokemon', (req, res) => {
