@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        fetch('http://localhost:3000/movies')
+            .then(movies => movies.json())
+            .then(movies => {
+                const html = movies.map(movie => {
+                    const { title, poster, year, id, director } = movie
+                    return `
+                        <article data-id="${id}">
+                            <p><strong>Title:</strong> ${title}</p>
+                            <p><strong>Year:</strong> ${year}</p>
+                            <p><strong>Director:</strong> ${director}</p>
+                            <button> Eliminar </button>
+                            <img src="${poster}" />
+                        </article>
+                    `
+                }).join('')
+                document.querySelector('main').innerHTML = html
+                document.addEventListener('click', (e) => {
+                    if(e.target.matches('button')){
+                        const article = e.target.closest('article')
+                        const { id } = article.dataset
+                        fetch(`http://localhost:3000/movies/${id}`, { method: 'DELETE' })
+                        .then(res => {
+                            if(res.ok) {
+                                article.remove()
+                            }
+                        })
+                    }
+                })
+            })
+    </script>
+    <style>
+        html {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        article {
+            width: 480px;
+            margin: 0 auto;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <main></main>
+</body>
+</html>

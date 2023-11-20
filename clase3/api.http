@@ -14,13 +14,27 @@ POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-    "title": "Django Unchained",
+    "sql": "SELECT * FROM users",
     "year": 2013,
     "director": "Quentin Tarantino",
     "duration": 165,
+    "rate": 8.5,
+    "poster": "https://m.media-amazon.com/images/I/912vL7muRwL.jpg",
     "genre": [
-        "Western",
         "Action",
-        "Drama"
+        "Drama",
+        "Crime"
     ]
 }
+
+### Actualizar una película
+PATCH http://localhost:3000/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json
+
+{
+    "year": 2000,
+    "rate": 1
+}
+
+### Eliminar articulo
+DELETE http://localhost:3000/movies/c906673b-3948-4402-ac7f-73ac3a9e3105
