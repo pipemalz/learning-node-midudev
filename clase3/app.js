@@ -3,6 +3,7 @@ const crypto = require('node:crypto')
 
 // Importación de dependencias
 const express = require('express')
+const cors = require('cors')
 
 // Importación de constantes, datos JSON y funciones
 const moviesJSON = require('./movies.json')
@@ -11,13 +12,23 @@ const { validateMovie, validatePartialMovie } = require('./schemas/moviesSchema'
 // Definición de variables globales
 const app = express() // Creación de la app con express.js
 const PORT = 3000
-const ALLOWED_ORIGINS = [
-  'http://localhost:8080'
-]
 
 app.disable('x-powered-by')
 
-app.use(express.json())
+app.use(express.json()) // Middleware para manejar responses json https://www.npmjs.com/package/cors
+app.use(cors({
+  origin: (origin, callback) => {
+    const ALLOWED_ORIGINS = [
+      'http://localhost:8080',
+      'http://localhost:5173'
+    ]
+    if (ALLOWED_ORIGINS.includes(origin) || !origin) {
+      return callback(null, true)
+    }
+
+    return callback(new Error('Not allowed by CORS'))
+  }
+})) // Middleware para cabeceras CORS, Por defecto asigna '*' a la cabecera Access-Control-Allow-Origin, por lo tanto si queremos limitarlo se mandamos un parametro con los origin permitidos
 
 app.get('/', (request, response) => { // GET: Obtener un elemento / recurso del servidor
   response.status(200).send('<h1>Bienvenido</h1>')
@@ -25,12 +36,6 @@ app.get('/', (request, response) => { // GET: Obtener un elemento / recurso del 
 
 // Todos los recursos para MOVIES se identifican con /movies a estas rutas se le denomina endpoint.
 app.get('/movies', (request, response) => {
-  const origin = request.header('origin') // Recuperamos el origen desde donde se esta haciendo la request
-
-  if (ALLOWED_ORIGINS.includes(origin) || !origin) { // Si el origen de la request esta dentro de los dominios permitidos, permitimos la response habilitando CORS, si la request se hace desde el mismo origin que la propia api, este no tendra el origin por lo tanto decimos que si no esta origin tambien lo permitimos
-    response.header('Access-Control-Allow-Origin', origin) // Habilita CORS para el dominio/origen especificado. Para los navegadores que hacen la request es necesario habilitar esto, de lo contrario mostrara el tipico error CORS.
-  }
-
   // recuperamos el el genero enviado por query strings
   const { genre } = request.query
 
@@ -45,17 +50,10 @@ app.get('/movies', (request, response) => {
     return response.status(404).send('Not Found')
   }
 
-  console.log(`Request ${request.method} to ${request.url} from ${origin} was succesfully.`)
   response.status(200).json(moviesJSON)
 })
 
 app.get('/movies/:id', (request, response) => { // path-to-regexp
-  const origin = request.header('origin')
-
-  if (ALLOWED_ORIGINS.includes(origin) || !origin) {
-    response.header('Access-Control-Allow-Origin', origin)
-  }
-
   const { id } = request.params
   const movie = moviesJSON.find(movie => movie.id === id)
   if (movie) {
@@ -112,10 +110,6 @@ app.patch('/movies/:id', (request, response) => { // PATCH: Actualizar parcialme
 })
 
 app.delete('/movies/:id', (request, response) => {
-  const origin = request.header('origin')
-  if (ALLOWED_ORIGINS.includes(origin) || !origin) {
-    response.header('Access-Control-Allow-Origin', origin)
-  }
   const { id } = request.params
   const movieIndex = moviesJSON.findIndex(movie => movie.id === id)
 
@@ -132,11 +126,6 @@ app.delete('/movies/:id', (request, response) => {
 // CORS Pre-flight --> OPTIONS --> Es una peticion previa que hace el navegador con el metodo OPTIONS antes de hacer la peticion PUT/PATCH/DELETE, por lo tanto tenemos que manejarla desde el backend:
 
 app.options('/movies/:id', (request, response) => {
-  const origin = request.header('origin')
-  if (ALLOWED_ORIGINS.includes(origin) || !origin) {
-    response.header('Access-Control-Allow-Origin', origin)
-    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
-  }
   response.sendStatus(200)
 })
 
