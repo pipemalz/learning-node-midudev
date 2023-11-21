@@ -32,9 +32,8 @@ PATCH http://localhost:3000/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 Content-Type: application/json
 
 {
-    "year": 2000,
-    "rate": 1
+    "title": "El marcus pichus"
 }
 
-### Eliminar articulo
+### Eliminar pelicula
 DELETE http://localhost:3000/movies/c906673b-3948-4402-ac7f-73ac3a9e3105
